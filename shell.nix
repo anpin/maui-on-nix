@@ -18,10 +18,15 @@ let
         done
       '';
     });
-in mkShell {
-  packages = [
+in (buildFHSUserEnv {
+  name = "dotnet-fhs";
+  targetPkgs = pkgs: [
       dotnet-combined
+      # dotnet-sdk_8
       tree
+      bashInteractive
   ];
   DOTNET_ROOT = "${dotnet-combined}";
-}
+
+  runScript = "bash";
+}).env
