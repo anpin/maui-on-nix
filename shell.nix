@@ -18,15 +18,17 @@ let
         done
       '';
     });
+    runScript = pkgs.writers.writeBash "runScript" ''
+      export DOTNET_ROOT="${dotnet-combined}"
+      export PATH="${dotnet-combined}/bin:$PATH"
+      exec bash
+    '';
 in (buildFHSUserEnv {
-  name = "dotnet-fhs";
+  inherit runScript;
+  name = "maui";
   targetPkgs = pkgs: [
       dotnet-combined
-      # dotnet-sdk_8
       tree
       bashInteractive
   ];
-  DOTNET_ROOT = "${dotnet-combined}";
-
-  runScript = "bash";
 }).env
